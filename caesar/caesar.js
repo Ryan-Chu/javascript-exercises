@@ -1,19 +1,23 @@
 const caesar = function(unencryptedMessage, encryption) {
-    if(unencryptedMessage.charAt(0).toUpperCase() != unencryptedMessage.charAt(0).toLowerCase()){
-        var encryptedMessage = String.fromCharCode(unencryptedMessage.charCodeAt(0) + encryption);
-    }
-    else{
-        var encryptedMessage = unencryptedMessage.charAt(0);
-    }
-        for(var i = 1; i < unencryptedMessage.length; i ++){
-            if(unencryptedMessage.charAt(i).toUpperCase() != unencryptedMessage.charAt(i).toLowerCase()){
-                encryptedMessage = encryptedMessage + String.fromCharCode(unencryptedMessage.charCodeAt(i) + encryption) ;
+
+
+    const mod = (n,m) => (n%m + m) % m;
+    const codeSet = code => (code < 97 ? 65 : 97);
+    var firstChar= unencryptedMessage.charCodeAt(0);
+    var encryptedMessage = String.fromCharCode(mod(firstChar + encryption - codeSet(firstChar), 26) + codeSet(firstChar));
+    
+    for(var i = 1; i < unencryptedMessage.length; i++){
+        var code = unencryptedMessage.charCodeAt(i)
+        if((code >= 65 && code <= 90) || (code>= 97 && code<= 122)){
+            encryptedMessage = encryptedMessage + String.fromCharCode(mod(code + encryption - codeSet(code), 26) + codeSet(code)) ;
             }
-            else{
-                encryptedMessage = encryptedMessage + String.fromCharCode(unencryptedMessage.charCodeAt(i));
+        else{
+            encryptedMessage = encryptedMessage + String.fromCharCode(unencryptedMessage.charCodeAt(i));
             }
         }
-        return encryptedMessage;
-}
+
+    
+        return encryptedMessage.toString();
+    }
 
 module.exports = caesar
